@@ -21,6 +21,7 @@ routes.use(authMiddleware);
 routes.put('/users/:id', UserController.update);
 
 routes.post('/meetups', MeetupController.store);
+routes.put('/meetups/:id', MeetupController.update);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
