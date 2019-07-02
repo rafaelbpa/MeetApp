@@ -21,9 +21,7 @@ class MeetupController {
     const hourStart = startOfHour(parseISO(date));
 
     if (isBefore(hourStart, new Date())) {
-      return res
-        .status(400)
-        .json({ error: "You can't subscribe to a past event" });
+      return res.status(400).json({ error: "You can't register a past date" });
     }
 
     const meetup = await Meetup.create({
