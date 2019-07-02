@@ -1,8 +1,32 @@
-import { isBefore, startOfHour, parseISO } from 'date-fns';
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
 import Meetup from '../models/Meetup';
+import User from '../models/User';
 
 class MeetupController {
+  async index(req, res) {
+    const where = {};
+    const { page = 1 } = req.query;
+
+    if (req.query.date) {
+      const searchDate = parseISO(req.query.date);
+
+      where.date = {
+        [Op.between]: [startOfDay(searchDate), endOfDay(searchDate)],
+      };
+    }
+
+    const meetups = await Meetup.findAll({
+      where,
+      include: [User],
+      limit: 10,
+      offset: 10 * page - 10,
+    });
+
+    return res.json(meetups);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
@@ -18,9 +42,7 @@ class MeetupController {
 
     const { title, description, location, date, file_id } = req.body;
 
-    const hourStart = startOfHour(parseISO(date));
-
-    if (isBefore(hourStart, new Date())) {
+    if (isBefore(parseISO(date), new Date())) {
       return res.status(400).json({ error: "You can't register a past date" });
     }
 
