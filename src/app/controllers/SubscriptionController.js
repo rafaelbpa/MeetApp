@@ -7,7 +7,9 @@ import SubscriptionMail from '../jobs/SubscriptionMail';
 class SubscriptionController {
   async store(req, res) {
     // const
-    const meetup = await Meetup.findByPk(req.params.id);
+    const meetup = await Meetup.findByPk(req.params.id, {
+      include: [User],
+    });
 
     if (!meetup) {
       return res.status(404).json({ error: 'Meetup not found.' });
