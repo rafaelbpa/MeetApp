@@ -4,9 +4,10 @@ import express from 'express';
 import Youch from 'youch';
 import 'express-async-errors';
 import path from 'path';
-import routes from './routes';
 
 import './database';
+
+import routes from './routes';
 
 class App {
   constructor() {
