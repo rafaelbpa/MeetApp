@@ -51,12 +51,6 @@ class UserController {
       return res.status(400).json({ error: 'Validation failed' });
     }
 
-    if (parseInt(req.params.id, 10) !== req.userId) {
-      return res
-        .status(401)
-        .json({ error: 'You are not allowed to do this operation' });
-    }
-
     const { email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
