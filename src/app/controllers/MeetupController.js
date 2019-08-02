@@ -34,7 +34,7 @@ class MeetupController {
         {
           model: File,
           as: 'File',
-          attributes: ['id', 'name', 'path']
+          attributes: ['id', 'path', 'url']
         }
       ]
     });
