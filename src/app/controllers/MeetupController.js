@@ -20,7 +20,14 @@ class MeetupController {
 
     const meetups = await Meetup.findAll({
       where,
-      include: [User],
+      include: [
+        User,
+        {
+          model: File,
+          as: 'File',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
       limit: 10,
       offset: 10 * page - 10,
     });
@@ -34,9 +41,9 @@ class MeetupController {
         {
           model: File,
           as: 'File',
-          attributes: ['id', 'path', 'url']
-        }
-      ]
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
     });
 
     return res.json(meetup);
